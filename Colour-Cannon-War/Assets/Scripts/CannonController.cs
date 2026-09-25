@@ -23,6 +23,7 @@ public class CannonController : MonoBehaviour
     [Header("Automatic Fire")]
     [SerializeField] private bool fireOnStart = true;
     [SerializeField, Min(0.01f)] private float reloadTime = 2f;
+    [SerializeField, Min(0f)] private float reloadVariance = 0.2f;
 
     private float reloadTimer;
     private Quaternion cylinderStartingRotation;
@@ -36,7 +37,7 @@ public class CannonController : MonoBehaviour
         }
 
         rotationStartTime = Time.time;
-        reloadTimer = fireOnStart ? 0f : reloadTime;
+        reloadTimer = fireOnStart ? 0f : GetNextReloadTime();
     }
 
     private void Update()
@@ -51,7 +52,14 @@ public class CannonController : MonoBehaviour
         }
 
         Fire();
-        reloadTimer = reloadTime;
+        reloadTimer = GetNextReloadTime();
+    }
+
+    private float GetNextReloadTime()
+    {
+        float minimumReloadTime = Mathf.Max(0.01f, reloadTime - reloadVariance);
+        float maximumReloadTime = reloadTime + reloadVariance;
+        return Random.Range(minimumReloadTime, maximumReloadTime);
     }
 
     private void RotateCylinder()
