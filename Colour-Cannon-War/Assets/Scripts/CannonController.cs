@@ -106,6 +106,13 @@ public class CannonController : MonoBehaviour
             projectileController.SetMaterial(projectileMaterial);
         }
 
+        ExplodingProjectile explodingProjectile = projectile.GetComponent<ExplodingProjectile>();
+
+        if (explodingProjectile != null)
+        {
+            explodingProjectile.SetMaterial(projectileMaterial);
+        }
+
         float randomHorizontalOffset = Random.Range(-horizontalSpread, horizontalSpread);
         float randomLaunchAngle = launchAngle + Random.Range(-launchAngleSpread, launchAngleSpread);
         randomLaunchAngle = Mathf.Clamp(randomLaunchAngle, 0f, 89f);
