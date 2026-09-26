@@ -401,6 +401,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5617010196030459844}
   - component: {fileID: 5750700887802464908}
+  - component: {fileID: 242775914834009812}
   m_Layer: 0
   m_Name: BlueMortar
   m_TagString: Untagged
@@ -457,6 +458,33 @@ MonoBehaviour:
   fireOnStart: 1
   reloadTime: 2
   reloadVariance: 0.2
+--- !u!114 &242775914834009812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665095856563077786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  m_InScenePlacedDisabledByDefault: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  m_InScenePlaced: 0
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &8565619717604916436
 GameObject:
   m_ObjectHideFlags: 0

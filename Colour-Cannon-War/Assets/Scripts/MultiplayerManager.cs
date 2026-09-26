@@ -6,10 +6,11 @@ using Unity.Services.Multiplayer;
 using UnityEngine;
 
 
-public class MultiplayerManager : MonoBehaviour
+public class MultiplayerManager : NetworkBehaviour
 {
    private ISession currentSession;
    [SerializeField] private MultiplayerUI multiplayerUI;
+   [SerializeField] private GameObject multiplayerMenu;
 
    private async void Start()
     {
@@ -35,6 +36,66 @@ public class MultiplayerManager : MonoBehaviour
         Debug.LogError("Failed to initialize Unity Services: " + e);
     }
 }
+
+private void CheckPlayersConnected()
+    {
+        if (!NetworkManager.Singleton.IsServer)
+        {
+        return;
+        }
+
+        int playerCount = NetworkManager.Singleton.ConnectedClients.Count;
+
+        Debug.Log("Players connected: " + playerCount);
+
+        if (playerCount == 2)
+        {
+            StartGame();
+        }
+    }
+
+private void OnEnable()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        }
+    }
+
+private void OnDisable()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+        }
+    }
+
+private void OnClientConnected(ulong clientId)
+    {
+        Debug.Log("Client connected: " + clientId);
+        CheckPlayersConnected();
+    }
+
+
+
+
+private void StartGame()
+    {
+        Debug.Log("Both players connected. Start now Oloo");
+
+        HideMenuClientRpc();
+    }
+
+[ClientRpc]
+private void HideMenuClientRpc()
+    {
+        if (multiplayerMenu != null)
+        {
+            multiplayerMenu.SetActive(false);
+        }
+    }
+
+
 
 public async void CreateRoom()
     {

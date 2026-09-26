@@ -7590,6 +7590,7 @@ MonoBehaviour:
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 1233b9e67aeb64a69acb003ed805f15b, type: 2}
+      - {fileID: 11400000, guid: 1233b9e67aeb64a69acb003ed805f15b, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -13502,6 +13503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2030642817}
+  - component: {fileID: 2030642819}
   - component: {fileID: 2030642818}
   m_Layer: 0
   m_Name: MultiplayerManager
@@ -13537,7 +13539,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efab39546b4c048578d9ba326e8ad168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  ShowTopMostFoldoutHeaderGroup: 1
   multiplayerUI: {fileID: 579858180}
+  multiplayerMenu: {fileID: 579858178}
+--- !u!114 &2030642819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030642816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1529684029
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  m_InScenePlacedDisabledByDefault: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  m_InScenePlaced: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &2036815491
 GameObject:
   m_ObjectHideFlags: 0
@@ -15370,6 +15401,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1639882027475608484, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
+      propertyPath: m_InScenePlaced
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639882027475608484, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3397491702
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639882027475608484, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639882027475608484, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
+      propertyPath: m_InScenePlacedDisabledByDefault
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639882027475608484, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 4113559331
+      objectReference: {fileID: 0}
     - target: {fileID: 3071022963999183131, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
       propertyPath: m_Name
       value: BlueCannon
@@ -15439,6 +15490,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 242775914834009812, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
+      propertyPath: m_InScenePlaced
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 242775914834009812, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1486963992
+      objectReference: {fileID: 0}
+    - target: {fileID: 242775914834009812, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 242775914834009812, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
+      propertyPath: m_InScenePlacedDisabledByDefault
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 242775914834009812, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 264033104
+      objectReference: {fileID: 0}
     - target: {fileID: 5617010196030459844, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
