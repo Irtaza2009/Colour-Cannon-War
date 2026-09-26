@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -57,6 +58,10 @@ public async void CreateRoom()
             {
                 Debug.LogError("MultiplayerUI is Oloo!");
             }
+
+            NetworkManager.Singleton.StartHost();
+
+            Debug.Log("NGO Host Started!");
         }
         catch (System.Exception e)
         {
@@ -72,6 +77,10 @@ public async void CreateRoom()
 
             Debug.Log("Joined room!");
             Debug.Log("Session ID: " + currentSession.Id);
+
+            NetworkManager.Singleton.StartClient();
+
+            Debug.Log("NGO Client Started!");
         }
         catch (System.Exception e)
         {
