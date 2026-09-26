@@ -246,7 +246,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cb3e52aad209340c3819ed2ddce94683, type: 2}
+  - {fileID: 2100000, guid: d43932a2179a54a908c46bd97420da03, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -443,17 +443,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CannonController
-  projectilePrefab: {fileID: 579519271851701124, guid: 5b7ebfb290a84a14f944405800db2e61, type: 3}
+  projectilePrefab: {fileID: 4570241817449906003, guid: bc76b4cd76fe2a14ea2e154eaa0de7c8, type: 3}
   muzzle: {fileID: 613166597195374592}
   projectileMaterial: {fileID: 2100000, guid: 709811689e4cb1b47b1a6bae26156728, type: 2}
   projectileSpeed: 12
   launchAngle: 16
   projectileLifetime: 20
-  horizontalSpread: 2
-  launchAngleSpread: 5
+  horizontalSpread: 4
+  launchAngleSpread: 8
   rotateCylinder: 0
   cylinder: {fileID: 0}
   rotationAxis: {x: 0, y: 0, z: 0}
+  cylinderRotationLimit: 40
   rotationSpeed: 40
   fireOnStart: 1
   reloadTime: 2

@@ -138,18 +138,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CannonController
-  projectilePrefab: {fileID: 932774105974669521, guid: d60f7d27bce6b584ea489a7550eb48eb, type: 3}
+  projectilePrefab: {fileID: 6419134360401917434, guid: 334219b6792dae94386d7cd9bed7ae58, type: 3}
   muzzle: {fileID: 3335344508976972778}
   projectileMaterial: {fileID: 2100000, guid: 709811689e4cb1b47b1a6bae26156728, type: 2}
   projectileSpeed: 10.5
   launchAngle: 10
   projectileLifetime: 10
-  horizontalSpread: 4
-  launchAngleSpread: 2
+  horizontalSpread: 15
+  launchAngleSpread: 10
   rotateCylinder: 1
   cylinder: {fileID: 3354753027879339458}
   rotationAxis: {x: 0, y: 0, z: 3}
-  rotationSpeed: 40
+  cylinderRotationLimit: 40
+  rotationSpeed: 30
   fireOnStart: 1
   reloadTime: 2
   reloadVariance: 0.2
@@ -509,13 +510,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7098695824996605930}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.40673664, z: 0, w: 0.9135455}
+  m_LocalRotation: {x: 0.019928897, y: -0.40663984, z: 0.008872916, w: 0.9133281}
   m_LocalPosition: {x: -0.025, y: 0, z: 0.065}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3354753027879339458}
-  m_LocalEulerAnglesHint: {x: 0, y: -48, z: 0}
+  m_LocalEulerAnglesHint: {x: 2.5, y: -48, z: 0}
 --- !u!1 &7996762546010927787
 GameObject:
   m_ObjectHideFlags: 0

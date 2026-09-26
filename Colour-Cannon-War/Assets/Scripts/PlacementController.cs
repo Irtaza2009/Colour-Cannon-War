@@ -13,6 +13,7 @@ public class PlacementController : MonoBehaviour
     [SerializeField, Min(0.01f)] private float cellSize = 1.6f;
     [SerializeField, Min(1)] private int gridWidth = 10;
     [SerializeField, Min(1)] private int gridDepth = 11;
+    [SerializeField] private float mortarZOffset = -0.3f;
     [SerializeField] private Color validPreviewColor = new Color(0.65f, 0.65f, 0.65f, 0.65f);
     [SerializeField] private Color invalidPreviewColor = new Color(1f, 0.25f, 0.25f, 0.65f);
 
@@ -120,9 +121,20 @@ public class PlacementController : MonoBehaviour
         previewObject.transform.position = snappedPosition;
         previewObject.transform.rotation = selectedPrefab.transform.rotation;
         AlignPreviewToTileTop(hit.collider);
+        ApplyPrefabOffset();
         previewPosition = previewObject.transform.position;
         previewIsValid = !IsPositionOccupied();
         SetPreviewColor(previewIsValid ? validPreviewColor : invalidPreviewColor);
+    }
+
+    private void ApplyPrefabOffset()
+    {
+        CannonController cannonController = selectedPrefab.GetComponent<CannonController>();
+
+        if (cannonController != null && cannonController.UsesExplodingProjectile())
+        {
+            previewObject.transform.position += Vector3.forward * mortarZOffset;
+        }
     }
 
     private bool TryGetGridPosition(Vector3 hitPosition, out Vector3 snappedPosition)

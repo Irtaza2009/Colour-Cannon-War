@@ -18,6 +18,7 @@ public class CannonController : MonoBehaviour
     [SerializeField] private bool rotateCylinder;
     [SerializeField] private Transform cylinder;
     [SerializeField] private Vector3 rotationAxis = Vector3.right;
+    [SerializeField, Range(0f, 89f)] private float cylinderRotationLimit = 40f;
     [SerializeField, Min(0.1f)] private float rotationSpeed = 40f;
 
     [Header("Automatic Fire")]
@@ -28,6 +29,11 @@ public class CannonController : MonoBehaviour
     private float reloadTimer;
     private Quaternion cylinderStartingRotation;
     private float rotationStartTime;
+
+    public bool UsesExplodingProjectile()
+    {
+        return projectilePrefab != null && projectilePrefab.GetComponent<ExplodingProjectile>() != null;
+    }
 
     private void Start()
     {
@@ -69,22 +75,22 @@ public class CannonController : MonoBehaviour
             return;
         }
 
-        float cycleDuration = 120f / rotationSpeed;
+        float cycleDuration = cylinderRotationLimit * 4f / rotationSpeed;
         float cycleTime = Mathf.Repeat(Time.time - rotationStartTime, cycleDuration);
         float elapsedDegrees = cycleTime * rotationSpeed;
         float angle;
 
-        if (elapsedDegrees <= 30f)
+        if (elapsedDegrees <= cylinderRotationLimit)
         {
             angle = elapsedDegrees;
         }
-        else if (elapsedDegrees <= 90f)
+        else if (elapsedDegrees <= cylinderRotationLimit * 3f)
         {
-            angle = 30f - (elapsedDegrees - 30f);
+            angle = cylinderRotationLimit - (elapsedDegrees - cylinderRotationLimit);
         }
         else
         {
-            angle = elapsedDegrees - 120f;
+            angle = elapsedDegrees - cylinderRotationLimit * 4f;
         }
 
         cylinder.localRotation = cylinderStartingRotation * Quaternion.AngleAxis(angle, rotationAxis.normalized);
