@@ -18,6 +18,7 @@ public class PlacementController : MonoBehaviour
 
     private readonly List<GameObject> placedObjects = new();
     private GameObject selectedPrefab;
+    [SerializeField] private NetworkPlacementManager networkPlacementManager;
     private GameObject previewObject;
     private Renderer[] previewRenderers;
     private Vector3 previewPosition;
@@ -194,11 +195,22 @@ public class PlacementController : MonoBehaviour
 
     private GameObject PlaceSelectedObject()
     {
-        GameObject placedObject = Instantiate(selectedPrefab, previewPosition, previewObject.transform.rotation);
-        placedObjects.Add(placedObject);
-        DestroyPreview();
-        selectedPrefab = null;
-        return placedObject;
+        int prefabIndex = networkPlacementManager.GetPrefabIndex(selectedPrefab);
+
+        if (prefabIndex == -1)
+        {
+            Debug.LogError("Selected prefab is not registered in NetworkPlacementManager!");
+            return null;
+        }
+        networkPlacementManager.RequestPlacement(
+            prefabIndex, 
+            previewPosition, 
+            selectedPrefab.transform.rotation);
+
+            DestroyPreview();
+            selectedPrefab = null;
+
+            return null;
     }
 
     private void SetPreviewColor(Color color)
