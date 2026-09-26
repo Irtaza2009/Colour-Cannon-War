@@ -120,9 +120,7 @@ public async void CreateRoom()
                 Debug.LogError("MultiplayerUI is Oloo!");
             }
 
-            NetworkManager.Singleton.StartHost();
-
-            Debug.Log("NGO Host Started!");
+            Debug.Log("Relay session created; the Multiplayer Services Netcode handler will start the host.");
         }
         catch (System.Exception e)
         {
@@ -139,9 +137,7 @@ public async void CreateRoom()
             Debug.Log("Joined room!");
             Debug.Log("Session ID: " + currentSession.Id);
 
-            NetworkManager.Singleton.StartClient();
-
-            Debug.Log("NGO Client Started!");
+            Debug.Log("Relay session joined; the Multiplayer Services Netcode handler will start the client.");
         }
         catch (System.Exception e)
         {
