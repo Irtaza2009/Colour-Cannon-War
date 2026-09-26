@@ -26,7 +26,7 @@ public class NetworkPlacementManager : NetworkBehaviour
         PlaceObjectServerRpc(prefabIndex, position, rotation);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void PlaceObjectServerRpc(
         int prefabIndex, 
         Vector3 position, 

@@ -50,8 +50,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 932774105974669521, guid: d60f7d27bce6b584ea489a7550eb48eb, type: 3}
   muzzle: {fileID: 2587259931987761135}
   projectileMaterial: {fileID: 2100000, guid: 4a0775164f4e404489d63cc16e8f9931, type: 2}
-  projectileSpeed: 10
-  launchAngle: 8
+  projectileSpeed: 10.5
+  launchAngle: 10
   projectileLifetime: 10
   horizontalSpread: 4
   launchAngleSpread: 2
@@ -391,13 +391,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7195828460918666322}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0262, y: 0, z: 0.0651}
+  m_LocalRotation: {x: 0, y: -0.40673664, z: 0, w: 0.9135455}
+  m_LocalPosition: {x: -0.025, y: 0, z: 0.065}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7335318227338691861}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -48, z: 0}
 --- !u!1 &7728552375410583209
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +464,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6073b7deec7184164976654c0f9a55b8, type: 2}
+  - {fileID: 2100000, guid: 4a0775164f4e404489d63cc16e8f9931, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

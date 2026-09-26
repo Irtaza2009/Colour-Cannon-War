@@ -4,17 +4,30 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
-public class MultiplayerManager : NetworkBehaviour
+public class MultiplayerManager : MonoBehaviour
 {
+    private const int SessionOperationTimeoutSeconds = 30;
+
    private ISession currentSession;
    [SerializeField] private MultiplayerUI multiplayerUI;
-   [SerializeField] private GameObject multiplayerMenu;
+    [SerializeField] private LoadingUI loadingUI;
+    [SerializeField] private string gameplaySceneName = "GameScene";
+    private bool gameplaySceneLoading;
+    private bool sessionOperationInProgress;
+    private Task initializationTask;
+
+       private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
 
    private async void Start()
     {
-        await InitializeServices();
+        initializationTask = InitializeServices();
+        await initializationTask;
     }
 
     private async Task InitializeServices()
@@ -81,17 +94,21 @@ private void OnClientConnected(ulong clientId)
 
 private void StartGame()
     {
-        Debug.Log("Both players connected. Start now Oloo");
+        if (gameplaySceneLoading || string.IsNullOrWhiteSpace(gameplaySceneName))
+        {
+            return;
+        }
 
-        HideMenuClientRpc();
+        gameplaySceneLoading = true;
+        SetLoading("Loading game...");
+        NetworkManager.Singleton.SceneManager.LoadScene(gameplaySceneName, LoadSceneMode.Single);
     }
 
-[ClientRpc]
-private void HideMenuClientRpc()
+    private void SetLoading(string message)
     {
-        if (multiplayerMenu != null)
+        if (loadingUI != null)
         {
-            multiplayerMenu.SetActive(false);
+            loadingUI.SetLoading(true, message);
         }
     }
 
@@ -99,8 +116,18 @@ private void HideMenuClientRpc()
 
 public async void CreateRoom()
     {
+        if (sessionOperationInProgress)
+        {
+            return;
+        }
+
+        sessionOperationInProgress = true;
+        SetLoading("Creating room...");
+
         try
         {
+            await WaitForInitialization();
+
             var options = new SessionOptions
             {
                 MaxPlayers = 2
@@ -120,19 +147,46 @@ public async void CreateRoom()
                 Debug.LogError("MultiplayerUI is Oloo!");
             }
 
+            SetLoading(false);
             Debug.Log("Relay session created; the Multiplayer Services Netcode handler will start the host.");
         }
         catch (System.Exception e)
         {
+            SetLoading(false);
             Debug.LogError("Failed to create room: " + e);
+        }
+        finally
+        {
+            sessionOperationInProgress = false;
         }
     }
 
     public async void JoinRoom(string roomCode)
     {
+        if (sessionOperationInProgress)
+        {
+            return;
+        }
+
+        sessionOperationInProgress = true;
+        SetLoading("Joining room...");
+
         try
         {
-            currentSession = await MultiplayerService.Instance.JoinSessionByCodeAsync(roomCode);
+            await WaitForInitialization();
+
+            Task<ISession> joinTask = MultiplayerService.Instance.JoinSessionByCodeAsync(roomCode);
+            Task completedTask = await Task.WhenAny(
+                joinTask,
+                Task.Delay(System.TimeSpan.FromSeconds(SessionOperationTimeoutSeconds)));
+
+            if (completedTask != joinTask)
+            {
+                throw new System.TimeoutException(
+                    "Joining the room timed out. Check that the host is still connected and try again.");
+            }
+
+            currentSession = await joinTask;
 
             Debug.Log("Joined room!");
             Debug.Log("Session ID: " + currentSession.Id);
@@ -141,7 +195,30 @@ public async void CreateRoom()
         }
         catch (System.Exception e)
         {
+            SetLoading(false);
             Debug.LogError("Failed to join room: " + e);
+        }
+        finally
+        {
+            sessionOperationInProgress = false;
+        }
+    }
+
+    private async Task WaitForInitialization()
+    {
+        if (initializationTask == null)
+        {
+            initializationTask = InitializeServices();
+        }
+
+        await initializationTask;
+    }
+
+    private void SetLoading(bool isLoading)
+    {
+        if (loadingUI != null)
+        {
+            loadingUI.SetLoading(isLoading);
         }
     }
 }
