@@ -13,6 +13,7 @@ public class PlacementController : MonoBehaviour
     [SerializeField, Min(0.01f)] private float cellSize = 1.6f;
     [SerializeField, Min(1)] private int gridWidth = 10;
     [SerializeField, Min(1)] private int gridDepth = 11;
+    [SerializeField, Min(1)] private int territoryDepth = 5;
     [SerializeField] private float mortarZOffset = -0.3f;
     [SerializeField] private float redMortarZOffset = 0.3f;
     [SerializeField] private Color validPreviewColor = new Color(0.65f, 0.65f, 0.65f, 0.65f);
@@ -145,8 +146,35 @@ public class PlacementController : MonoBehaviour
         AlignPreviewToTileTop(hit.collider);
         ApplyPrefabOffset();
         previewPosition = previewObject.transform.position;
-        previewIsValid = !IsPositionOccupied();
+        previewIsValid = IsPositionInLocalTerritory() && !IsPositionOccupied();
         SetPreviewColor(previewIsValid ? validPreviewColor : invalidPreviewColor);
+    }
+
+    private bool IsPositionInLocalTerritory()
+    {
+        if (TeamCameraController.Instance == null || !TeamCameraController.Instance.HasTeam)
+        {
+            return false;
+        }
+
+        return IsPositionInTerritory(
+            previewPosition,
+            TeamCameraController.Instance.CurrentTeam);
+    }
+
+    public bool IsPositionInTerritory(Vector3 position, NetworkPlayer.Team team)
+    {
+        int zIndex = Mathf.RoundToInt((position.z - gridOrigin.y) / cellSize);
+        int clampedTerritoryDepth = Mathf.Clamp(territoryDepth, 1, gridDepth);
+
+        if (zIndex < 0 || zIndex >= gridDepth)
+        {
+            return false;
+        }
+
+        return team == NetworkPlayer.Team.Blue
+            ? zIndex < clampedTerritoryDepth
+            : zIndex >= gridDepth - clampedTerritoryDepth;
     }
 
     private void ApplyPrefabOffset()

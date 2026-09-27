@@ -2057,7 +2057,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6.3
+  orthographic size: 7.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2150,7 +2150,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6.3
+  orthographic size: 7.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8757,9 +8757,11 @@ MonoBehaviour:
   tileTopOffset: 0.02
   gridOrigin: {x: -3.8, y: -1.6}
   cellSize: 1.6
-  gridWidth: 10
+  gridWidth: 9
   gridDepth: 11
+  territoryDepth: 5
   mortarZOffset: -0.3
+  redMortarZOffset: 0.3
   validPreviewColor: {r: 0.76280314, g: 0.76280314, b: 0.76280314, a: 0.28627452}
   invalidPreviewColor: {r: 1, g: 0.25, b: 0.25, a: 0.65}
   networkPlacementManager: {fileID: 447251331}

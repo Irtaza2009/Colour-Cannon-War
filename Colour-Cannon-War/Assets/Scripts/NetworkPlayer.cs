@@ -57,7 +57,7 @@ public class NetworkPlayer : NetworkBehaviour
 
     private System.Collections.IEnumerator SetLocalCameraWhenReady(Team team)
     {
-        for (int attempt = 0; attempt < 300; attempt++)
+        while (isActiveAndEnabled && IsSpawned)
         {
             if (TeamCameraController.Instance != null)
             {
@@ -67,10 +67,8 @@ public class NetworkPlayer : NetworkBehaviour
                 }
             }
 
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
         }
-
-        Debug.LogError("Could not find the local team camera. Assign both cameras on TeamCameraController in GameScene.");
     }
 
     private void UpdateAppearance(Team team)
