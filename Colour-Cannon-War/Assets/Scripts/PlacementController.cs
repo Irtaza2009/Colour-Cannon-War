@@ -14,6 +14,7 @@ public class PlacementController : MonoBehaviour
     [SerializeField, Min(1)] private int gridWidth = 10;
     [SerializeField, Min(1)] private int gridDepth = 11;
     [SerializeField] private float mortarZOffset = -0.3f;
+    [SerializeField] private float redMortarZOffset = 0.3f;
     [SerializeField] private Color validPreviewColor = new Color(0.65f, 0.65f, 0.65f, 0.65f);
     [SerializeField] private Color invalidPreviewColor = new Color(1f, 0.25f, 0.25f, 0.65f);
 
@@ -35,6 +36,8 @@ public class PlacementController : MonoBehaviour
 
     private void Update()
     {
+        UpdatePlacementCamera();
+
         if (selectedPrefab == null || placementCamera == null)
         {
             return;
@@ -45,6 +48,25 @@ public class PlacementController : MonoBehaviour
         if (WasPointerPressed() && !IsPointerOverUi() && previewIsValid)
         {
             PlaceSelectedObject();
+        }
+    }
+
+    private void UpdatePlacementCamera()
+    {
+        if (TeamCameraController.Instance != null)
+        {
+            Camera teamCamera = TeamCameraController.Instance.GetCameraForCurrentTeam();
+
+            if (teamCamera != null)
+            {
+                placementCamera = teamCamera;
+                return;
+            }
+        }
+
+        if (placementCamera == null)
+        {
+            placementCamera = Camera.main;
         }
     }
 
@@ -133,7 +155,16 @@ public class PlacementController : MonoBehaviour
 
         if (cannonController != null && cannonController.UsesExplodingProjectile())
         {
-            previewObject.transform.position += Vector3.forward * mortarZOffset;
+            float offset = mortarZOffset;
+
+            if (TeamCameraController.Instance != null
+                && TeamCameraController.Instance.HasTeam
+                && TeamCameraController.Instance.CurrentTeam == NetworkPlayer.Team.Red)
+            {
+                offset = redMortarZOffset;
+            }
+
+            previewObject.transform.position += Vector3.forward * offset;
         }
     }
 

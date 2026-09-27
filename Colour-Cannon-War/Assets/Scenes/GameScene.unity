@@ -2482,6 +2482,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4267770568870958728, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
+      propertyPath: m_InScenePlaced
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4267770568870958728, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1697707300
+      objectReference: {fileID: 0}
+    - target: {fileID: 4267770568870958728, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1349777920
+      objectReference: {fileID: 0}
     - target: {fileID: 5617010196030459844, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.8
@@ -11157,6 +11169,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlacementInventoryButton
   placementController: {fileID: 1514224411}
   itemPrefab: {fileID: 7665095856563077786, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
+  bluePrefab: {fileID: 7665095856563077786, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
+  redPrefab: {fileID: 7665095856563077786, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
 --- !u!1 &2013677075
 GameObject:
   m_ObjectHideFlags: 0
@@ -12695,6 +12709,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlacementInventoryButton
   placementController: {fileID: 1514224411}
   itemPrefab: {fileID: 3071022963999183131, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
+  bluePrefab: {fileID: 3071022963999183131, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
+  redPrefab: {fileID: 369988169565566234, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
 --- !u!1 &2129398036
 GameObject:
   m_ObjectHideFlags: 0
@@ -13207,6 +13223,18 @@ PrefabInstance:
       propertyPath: launchAngleSpread
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4258791094820286422, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
+      propertyPath: m_InScenePlaced
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258791094820286422, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1768552502
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258791094820286422, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2849595211
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13309,6 +13337,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1013408642618740529, guid: ca5513104fc4c4ed0989697f83c02d0e, type: 3}
+      propertyPath: placeablePrefabs.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1013408642618740529, guid: ca5513104fc4c4ed0989697f83c02d0e, type: 3}
+      propertyPath: 'placeablePrefabs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 369988169565566234, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
+    - target: {fileID: 1013408642618740529, guid: ca5513104fc4c4ed0989697f83c02d0e, type: 3}
+      propertyPath: 'placeablePrefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 7665095856563077786, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
     - target: {fileID: 2724910036346575666, guid: ca5513104fc4c4ed0989697f83c02d0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1270.9435

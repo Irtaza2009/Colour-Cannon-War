@@ -4,6 +4,9 @@ public class TeamCameraController : MonoBehaviour
 {
     public static TeamCameraController Instance { get; private set; }
 
+    public NetworkPlayer.Team CurrentTeam { get; private set; }
+    public bool HasTeam { get; private set; }
+
     [SerializeField] private Camera blueCamera;
     [SerializeField] private Camera redCamera;
 
@@ -42,10 +45,22 @@ public class TeamCameraController : MonoBehaviour
                 audioListener.enabled = true;
             }
 
+            CurrentTeam = team;
+            HasTeam = true;
             return true;
         }
 
         return false;
+    }
+
+    public Camera GetCameraForCurrentTeam()
+    {
+        if (!HasTeam)
+        {
+            return null;
+        }
+
+        return CurrentTeam == NetworkPlayer.Team.Blue ? blueCamera : redCamera;
     }
 
     private void FindMissingCameras()
