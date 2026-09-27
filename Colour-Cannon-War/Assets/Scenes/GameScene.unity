@@ -13478,7 +13478,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1013408642618740529, guid: ca5513104fc4c4ed0989697f83c02d0e, type: 3}
       propertyPath: placeablePrefabs.Array.size
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1013408642618740529, guid: ca5513104fc4c4ed0989697f83c02d0e, type: 3}
       propertyPath: 'placeablePrefabs.Array.data[2]'
