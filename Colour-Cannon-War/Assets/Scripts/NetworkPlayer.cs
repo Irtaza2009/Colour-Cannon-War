@@ -23,11 +23,54 @@ public class NetworkPlayer : NetworkBehaviour
         PlayerTeam.OnValueChanged += OnTeamChanged;
 
         UpdateAppearance(PlayerTeam.Value);
+
+        if (IsOwner)
+        {
+            StartCoroutine(SetLocalCameraWhenReady(GetLocalTeam()));
+        }
     }
 
     private void OnTeamChanged(Team previousTeam, Team newTeam)
     {
         UpdateAppearance(newTeam);
+
+        if (IsOwner)
+        {
+            SetLocalCamera(newTeam);
+        }
+    }
+
+    private void SetLocalCamera(Team team)
+    {
+        if (TeamCameraController.Instance != null)
+        {
+            TeamCameraController.Instance.SetCameraForTeam(team);
+        }
+    }
+
+    private Team GetLocalTeam()
+    {
+        return OwnerClientId == NetworkManager.ServerClientId
+            ? Team.Blue
+            : Team.Red;
+    }
+
+    private System.Collections.IEnumerator SetLocalCameraWhenReady(Team team)
+    {
+        for (int attempt = 0; attempt < 300; attempt++)
+        {
+            if (TeamCameraController.Instance != null)
+            {
+                if (TeamCameraController.Instance.SetCameraForTeam(team))
+                {
+                    yield break;
+                }
+            }
+
+            yield return null;
+        }
+
+        Debug.LogError("Could not find the local team camera. Assign both cameras on TeamCameraController in GameScene.");
     }
 
     private void UpdateAppearance(Team team)
