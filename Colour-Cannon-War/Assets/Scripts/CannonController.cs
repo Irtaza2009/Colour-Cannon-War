@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class CannonController : MonoBehaviour
@@ -105,6 +106,7 @@ public class CannonController : MonoBehaviour
 
         Transform firingPoint = muzzle != null ? muzzle : transform;
         Rigidbody projectile = Instantiate(projectilePrefab, firingPoint.position, firingPoint.rotation);
+
         ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
 
         if (projectileController != null)
