@@ -2403,7 +2403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7665095856563077786, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3502,7 +3502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &577224824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13312,7 +13312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 369988169565566234, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1443521118763964068, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13413,7 +13413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3071022963999183131, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3185681238124575073, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
       propertyPath: horizontalSpread
@@ -13623,7 +13623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7665095856563077786, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
