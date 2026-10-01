@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2391977431401222524}
   - component: {fileID: 4570241817449906003}
   - component: {fileID: 3722781078103142034}
+  - component: {fileID: 5371125426349796801}
   m_Layer: 0
   m_Name: ExplodingCannonBall
   m_TagString: Untagged
@@ -103,6 +104,33 @@ MonoBehaviour:
   sidewaysSpread: 1
   parentVelocityInfluence: 0.5
   spawnSeparation: 0.5
+--- !u!114 &5371125426349796801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491822821198735964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 264033104
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  m_InScenePlacedDisabledByDefault: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  m_InScenePlaced: 0
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &4702398152880369512
 GameObject:
   m_ObjectHideFlags: 0
