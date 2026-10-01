@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class ExplodingProjectile : MonoBehaviour
+public class ExplodingProjectile : NetworkBehaviour
 {
     [Header("Explosion")]
     [SerializeField, Min(0.1f)] private float fuseTime = 8f;
@@ -15,6 +16,25 @@ public class ExplodingProjectile : MonoBehaviour
     private Material projectileMaterial;
     private float fuseTimer;
     private bool hasExploded;
+    private readonly NetworkVariable<Vector3> networkPosition = new();
+    private readonly NetworkVariable<Color32> networkColor = new();
+
+    public override void OnNetworkSpawn()
+    {
+        if (!IsServer)
+        {
+            Rigidbody body = GetComponent<Rigidbody>();
+
+            if (body != null)
+            {
+                body.isKinematic = true;
+            }
+        }
+
+        networkPosition.OnValueChanged += OnPositionChanged;
+        networkColor.OnValueChanged += OnColorChanged;
+        ApplyNetworkColor(networkColor.Value);
+    }
 
     private void Start()
     {
@@ -23,6 +43,11 @@ public class ExplodingProjectile : MonoBehaviour
 
     private void Update()
     {
+        if (!IsServer)
+        {
+            return;
+        }
+
         fuseTimer -= Time.deltaTime;
 
         if (fuseTimer <= 0f)
@@ -31,9 +56,23 @@ public class ExplodingProjectile : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (IsServer)
+        {
+            networkPosition.Value = transform.position;
+        }
+    }
+
     public void SetMaterial(Material material)
     {
         projectileMaterial = material;
+
+        if (IsServer && material != null)
+        {
+            networkColor.Value = material.color;
+        }
+
         ApplyMaterialToSelf();
     }
 
@@ -60,7 +99,10 @@ public class ExplodingProjectile : MonoBehaviour
             IgnoreExplosionCollisions(spawnedProjectiles);
         }
 
-        Destroy(gameObject);
+        if (IsSpawned)
+        {
+            NetworkObject.Despawn(true);
+        }
     }
 
     private Rigidbody SpawnSmallerProjectile(Vector3 parentVelocity)
@@ -86,6 +128,17 @@ public class ExplodingProjectile : MonoBehaviour
 
         ProjectileController projectileController = smallerProjectile.GetComponent<ProjectileController>();
 
+        NetworkObject networkObject = smallerProjectile.GetComponent<NetworkObject>();
+
+        if (networkObject == null)
+        {
+            Debug.LogError("The smaller projectile prefab needs a NetworkObject component.");
+            Destroy(smallerProjectile.gameObject);
+            return null;
+        }
+
+        networkObject.Spawn();
+
         if (projectileController != null)
         {
             projectileController.SetMaterial(projectileMaterial);
@@ -93,6 +146,27 @@ public class ExplodingProjectile : MonoBehaviour
 
         smallerProjectile.linearVelocity = velocity;
         return smallerProjectile;
+    }
+
+    private void OnPositionChanged(Vector3 previousPosition, Vector3 newPosition)
+    {
+        if (!IsServer)
+        {
+            transform.position = newPosition;
+        }
+    }
+
+    private void OnColorChanged(Color32 previousColor, Color32 newColor)
+    {
+        ApplyNetworkColor(newColor);
+    }
+
+    private void ApplyNetworkColor(Color32 color)
+    {
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.material.color = color;
+        }
     }
 
     private void IgnoreExplosionCollisions(Rigidbody[] spawnedProjectiles)

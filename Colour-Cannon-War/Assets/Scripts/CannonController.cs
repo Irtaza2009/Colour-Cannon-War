@@ -1,7 +1,8 @@
 
 using UnityEngine;
+using Unity.Netcode;
 
-public class CannonController : MonoBehaviour
+public class CannonController : NetworkBehaviour
 {
     [Header("Projectile")]
     [SerializeField] private Rigidbody projectilePrefab;
@@ -50,6 +51,11 @@ public class CannonController : MonoBehaviour
     private void Update()
     {
         RotateCylinder();
+
+        if (!IsServer)
+        {
+            return;
+        }
 
         reloadTimer -= Time.deltaTime;
 
@@ -106,6 +112,16 @@ public class CannonController : MonoBehaviour
 
         Transform firingPoint = muzzle != null ? muzzle : transform;
         Rigidbody projectile = Instantiate(projectilePrefab, firingPoint.position, firingPoint.rotation);
+        NetworkObject networkObject = projectile.GetComponent<NetworkObject>();
+
+        if (networkObject == null)
+        {
+            Debug.LogError("The projectile prefab needs a NetworkObject component.");
+            Destroy(projectile.gameObject);
+            return;
+        }
+
+        networkObject.Spawn();
 
         ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
 
@@ -132,7 +148,7 @@ public class CannonController : MonoBehaviour
 
         if (projectileLifetime > 0f)
         {
-            Destroy(projectile.gameObject, projectileLifetime);
+            projectileController?.DespawnAfter(projectileLifetime);
         }
     }
 }
