@@ -69,6 +69,7 @@ public class ProjectileController : NetworkBehaviour
 
         hasLanded = true;
         ApplyMaterialToTarget(collision.collider);
+        GameManager.Instance.TileWasHit(collision.collider);
         ContactPoint contact = collision.GetContact(0);
         ApplyTileColorClientRpc(contact.point, contact.normal, networkColor.Value);
         DespawnAfter(disappearDelay);
