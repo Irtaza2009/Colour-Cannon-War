@@ -3071,7 +3071,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178c3e11cfc4040148f4261e9caafc48, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 351d05ff55137854f82a6a5a4dee5317, type: 2}
+  m_sharedMaterial: {fileID: -2188688536644204319, guid: 178c3e11cfc4040148f4261e9caafc48, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7417,6 +7417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  ShowTopMostFoldoutHeaderGroup: 1
   projectilePrefab: {fileID: 579519271851701124, guid: 5b7ebfb290a84a14f944405800db2e61, type: 3}
   muzzle: {fileID: 2020301052}
   projectileMaterial: {fileID: 2100000, guid: 4a0775164f4e404489d63cc16e8f9931, type: 2}
@@ -12959,7 +12960,7 @@ MonoBehaviour:
   m_text: Create Room
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 178c3e11cfc4040148f4261e9caafc48, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 351d05ff55137854f82a6a5a4dee5317, type: 2}
+  m_sharedMaterial: {fileID: -2188688536644204319, guid: 178c3e11cfc4040148f4261e9caafc48, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -13901,6 +13902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  ShowTopMostFoldoutHeaderGroup: 1
   projectilePrefab: {fileID: 932774105974669521, guid: d60f7d27bce6b584ea489a7550eb48eb, type: 3}
   muzzle: {fileID: 337398736}
   projectileMaterial: {fileID: 2100000, guid: 4a0775164f4e404489d63cc16e8f9931, type: 2}
