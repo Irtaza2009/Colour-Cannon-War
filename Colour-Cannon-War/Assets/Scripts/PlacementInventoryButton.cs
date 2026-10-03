@@ -8,6 +8,7 @@ public class PlacementInventoryButton : MonoBehaviour
     [SerializeField] private GameObject redPrefab;
     [SerializeField] private GameObject blueImage;
     [SerializeField] private GameObject redImage;
+    [SerializeField, Min(0)] private int weaponCost = 10;
 
     private NetworkPlayer.Team displayedTeam;
     private bool hasDisplayedTeam;
@@ -50,7 +51,14 @@ public class PlacementInventoryButton : MonoBehaviour
 
         if (prefabToPlace != null)
         {
-            placementController.SelectPrefab(prefabToPlace);
+            if (GameManager.Instance != null
+                && GameManager.Instance.IsSpawned
+                && GameManager.Instance.GetLocalCoins() < weaponCost)
+            {
+                return;
+            }
+
+            placementController.SelectPrefab(prefabToPlace, weaponCost);
         }
     }
 

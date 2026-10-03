@@ -6558,7 +6558,7 @@ MonoBehaviour:
   m_ProtocolType: 0
   m_UseWebSockets: 0
   m_UseEncryption: 0
-  m_MaxPacketQueueSize: 128
+  m_MaxPacketQueueSize: 512
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
@@ -10539,11 +10539,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   tileTopOffset: 0.02
-  gridOrigin: {x: -3.8, y: -1.6}
-  cellSize: 1.6
-  gridWidth: 10
-  gridDepth: 11
-  territoryDepth: 5
+  placementXStart: -3.8
+  placementCellSize: 1.6
+  placementWidth: 9
+  placementRows: 3
+  bluePlacementZStart: -14
+  redPlacementZStart: 10.8
   mortarZOffset: -0.3
   redMortarZOffset: 0.3
   validPreviewColor: {r: 0.76280314, g: 0.76280314, b: 0.76280314, a: 0.28627452}

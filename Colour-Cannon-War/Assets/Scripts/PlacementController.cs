@@ -27,6 +27,7 @@ public class PlacementController : MonoBehaviour
     private Renderer[] previewRenderers;
     private Vector3 previewPosition;
     private bool previewIsValid;
+    private int selectedPurchaseCost;
 
     private void Awake()
     {
@@ -72,7 +73,7 @@ public class PlacementController : MonoBehaviour
         }
     }
 
-    public void SelectPrefab(GameObject prefab)
+    public void SelectPrefab(GameObject prefab, int purchaseCost)
     {
         if (prefab == null)
         {
@@ -80,6 +81,7 @@ public class PlacementController : MonoBehaviour
         }
 
         selectedPrefab = prefab;
+        selectedPurchaseCost = purchaseCost;
         CreatePreview();
     }
 
@@ -250,6 +252,14 @@ public class PlacementController : MonoBehaviour
 
     private GameObject PlaceSelectedObject()
     {
+        if (GameManager.Instance != null
+            && GameManager.Instance.IsSpawned
+            && GameManager.Instance.GetLocalCoins() < selectedPurchaseCost)
+        {
+            CancelPlacement();
+            return null;
+        }
+
         int prefabIndex = networkPlacementManager.GetPrefabIndex(selectedPrefab);
 
         if (prefabIndex == -1)

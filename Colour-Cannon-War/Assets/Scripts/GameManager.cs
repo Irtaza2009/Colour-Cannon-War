@@ -13,6 +13,9 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Vector2 arenaZBounds = new Vector2(-6.4f, 6.4f);
     [SerializeField, Min(1f)] private float gameDuration = 90f;
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text coinsText;
+    [SerializeField, Min(0)] private int startingCoins = 50;
+    [SerializeField, Min(0)] private int coinsPerTile = 2;
 
     [Header("Tile Materials")]
     [SerializeField] private Material blueMaterial;
@@ -26,9 +29,23 @@ public class GameManager : NetworkBehaviour
     private readonly NetworkVariable<float> timeRemaining = new();
     private readonly NetworkVariable<int> blueScore = new();
     private readonly NetworkVariable<int> redScore = new();
+    private readonly NetworkVariable<int> blueCoins = new();
+    private readonly NetworkVariable<int> redCoins = new();
 
     public int BlueScore => blueScore.Value;
     public int RedScore => redScore.Value;
+
+    public int GetLocalCoins()
+    {
+        if (TeamCameraController.Instance == null || !TeamCameraController.Instance.HasTeam)
+        {
+            return 0;
+        }
+
+        return TeamCameraController.Instance.CurrentTeam == NetworkPlayer.Team.Blue
+            ? blueCoins.Value
+            : redCoins.Value;
+    }
 
     private void Awake()
     {
@@ -44,19 +61,26 @@ public class GameManager : NetworkBehaviour
     {
         gameOver.OnValueChanged += OnGameOverChanged;
         timeRemaining.OnValueChanged += OnTimeRemainingChanged;
+        blueCoins.OnValueChanged += OnCoinsChanged;
+        redCoins.OnValueChanged += OnCoinsChanged;
 
         if (IsServer)
         {
             timeRemaining.Value = gameDuration;
+            blueCoins.Value = startingCoins;
+            redCoins.Value = startingCoins;
         }
 
         UpdateTimerText(timeRemaining.Value);
+        UpdateCoinsText();
     }
 
     public override void OnNetworkDespawn()
     {
         gameOver.OnValueChanged -= OnGameOverChanged;
         timeRemaining.OnValueChanged -= OnTimeRemainingChanged;
+        blueCoins.OnValueChanged -= OnCoinsChanged;
+        redCoins.OnValueChanged -= OnCoinsChanged;
     }
 
     private void Update()
@@ -74,7 +98,7 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    public void TileWasHit(Collider tileCollider)
+    public void TileWasHit(Collider tileCollider, Material newMaterial, bool changedColor)
     {
         if (!IsServer || gameOver.Value)
         {
@@ -83,9 +107,55 @@ public class GameManager : NetworkBehaviour
 
         UpdateScores();
 
+        if (changedColor)
+        {
+            AwardCoins(newMaterial);
+        }
+
         if (timeRemaining.Value <= 0f)
         {
             EndGame();
+        }
+    }
+
+    public bool TrySpendCoins(NetworkPlayer.Team team, int amount)
+    {
+        if (!IsServer || amount < 0)
+        {
+            return false;
+        }
+
+        if (team == NetworkPlayer.Team.Blue)
+        {
+            if (blueCoins.Value < amount)
+            {
+                return false;
+            }
+
+            blueCoins.Value -= amount;
+        }
+        else
+        {
+            if (redCoins.Value < amount)
+            {
+                return false;
+            }
+
+            redCoins.Value -= amount;
+        }
+
+        return true;
+    }
+
+    private void AwardCoins(Material newMaterial)
+    {
+        if (IsMaterialMatch(newMaterial, blueMaterial))
+        {
+            blueCoins.Value += coinsPerTile;
+        }
+        else if (IsMaterialMatch(newMaterial, redMaterial))
+        {
+            redCoins.Value += coinsPerTile;
         }
     }
 
@@ -161,6 +231,19 @@ public class GameManager : NetworkBehaviour
         UpdateTimerText(newValue);
     }
 
+    private void UpdateCoinsText()
+    {
+        if (coinsText != null)
+        {
+            coinsText.text = "Coins: " + GetLocalCoins().ToString();
+        }
+    }
+
+    private void OnCoinsChanged(int oldValue, int newValue)
+    {
+        UpdateCoinsText();
+    }
+
     private void UpdateTimerText(float seconds)
     {
         if (timerText != null)
@@ -184,14 +267,19 @@ public class GameManager : NetworkBehaviour
 
         if (winningTeam < 0)
         {
-            winnerText.text = $"Draw! {blueScore} - {redScore}";
+            winnerText.text = "Draw!";
             winnerText.color = Color.white;
             return;
         }
-
-        winnerText.text = winningTeam == 0
-            ? $"Blue Wins!"
-            : $"Red Wins!";
+        
+        if (winningTeam == 0)
+        {
+            winnerText.text = "Blue Wins!";
+        }
+        else
+        {
+            winnerText.text = "Red Wins!";
+        }
         Material winningMaterial = winningTeam == 0 ? blueMaterial : redMaterial;
 
         if (winningMaterial != null)

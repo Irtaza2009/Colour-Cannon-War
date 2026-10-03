@@ -2384,7 +2384,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 145, y: -18}
+  m_AnchoredPosition: {x: 124, y: -18}
   m_SizeDelta: {x: 214, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &158505369
@@ -2951,6 +2951,9 @@ MonoBehaviour:
   arenaZBounds: {x: -6.4, y: 6.4}
   gameDuration: 90
   timerText: {fileID: 1429710554}
+  coinsText: {fileID: 373037272}
+  startingCoins: 50
+  coinsPerTile: 2
   blueMaterial: {fileID: 2100000, guid: 709811689e4cb1b47b1a6bae26156728, type: 2}
   redMaterial: {fileID: 2100000, guid: 4a0775164f4e404489d63cc16e8f9931, type: 2}
   gameOverPanel: {fileID: 137090343}
@@ -4904,7 +4907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &308835131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6010,8 +6013,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285643458
-  m_fontColor: {r: 0.7607844, g: 0.7294118, b: 0.4431373, a: 1}
+    rgba: 4283094501
+  m_fontColor: {r: 0.89757407, g: 0.83577704, b: 0.28911072, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7076,7 +7079,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7665095856563077786, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8872,7 +8875,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -145, y: 16}
+  m_AnchoredPosition: {x: -124, y: 16}
   m_SizeDelta: {x: 214, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &466400070
@@ -11497,7 +11500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -230, y: -200}
+  m_AnchoredPosition: {x: -210, y: -200}
   m_SizeDelta: {x: 400, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &612608013
@@ -29505,7 +29508,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 145, y: 16}
+  m_AnchoredPosition: {x: 124, y: 16}
   m_SizeDelta: {x: 214, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1375665070
@@ -33894,7 +33897,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -145, y: -18}
+  m_AnchoredPosition: {x: -124, y: -18}
   m_SizeDelta: {x: 214, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1516386659
@@ -42479,6 +42482,7 @@ MonoBehaviour:
   redPrefab: {fileID: 7665095856563077786, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
   blueImage: {fileID: 805619139}
   redImage: {fileID: 174525245}
+  weaponCost: 15
 --- !u!1 &2013677075
 GameObject:
   m_ObjectHideFlags: 0
@@ -45417,6 +45421,7 @@ MonoBehaviour:
   redPrefab: {fileID: 369988169565566234, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
   blueImage: {fileID: 1914774151}
   redImage: {fileID: 1974182839}
+  weaponCost: 10
 --- !u!1 &2124369425
 GameObject:
   m_ObjectHideFlags: 0
@@ -45928,7 +45933,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 369988169565566234, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1443521118763964068, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
       propertyPath: m_LocalPosition.x
@@ -46041,7 +46046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3071022963999183131, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3185681238124575073, guid: f913ec57f37aa4ab88ffd5063b9c7547, type: 3}
       propertyPath: reloadTime
@@ -46279,7 +46284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7665095856563077786, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -46290,7 +46295,6 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 198681723}
   - {fileID: 330585546}
   - {fileID: 308835134}
   - {fileID: 410087041}
@@ -46308,3 +46312,4 @@ SceneRoots:
   - {fileID: 977920917}
   - {fileID: 1212467595}
   - {fileID: 1476155234}
+  - {fileID: 198681723}

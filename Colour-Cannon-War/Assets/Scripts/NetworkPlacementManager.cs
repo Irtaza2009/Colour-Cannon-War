@@ -5,6 +5,7 @@ using UnityEngine;
 public class NetworkPlacementManager : NetworkBehaviour
 {
     [SerializeField] private GameObject[] placeablePrefabs;
+    [SerializeField, Min(0)] private int[] placeablePrefabCosts;
     [SerializeField] private float placementXStart = -3.8f;
     [SerializeField, Min(0.01f)] private float placementCellSize = 1.6f;
     [SerializeField, Min(1)] private int placementWidth = 9;
@@ -60,20 +61,30 @@ public class NetworkPlacementManager : NetworkBehaviour
             return;
         }
 
-        GameObject placedObject = Instantiate(prefab, position, rotation);
+        NetworkObject prefabNetworkObject = prefab.GetComponent<NetworkObject>();
 
-        NetworkObject networkObject = placedObject.GetComponent<NetworkObject>();
-
-        if(networkObject == null)
+        if (prefabNetworkObject == null)
         {
-            Debug.LogError(
-                prefab.name + " is missing a NetworkObject component!"
-            );
-            Destroy(placedObject);
             return;
         }
 
-        networkObject.Spawn();
+        if (placeablePrefabCosts == null || prefabIndex >= placeablePrefabCosts.Length)
+        {
+            Debug.LogError("Assign a cost for every placeable prefab in NetworkPlacementManager.");
+            return;
+        }
+
+        int purchaseCost = placeablePrefabCosts[prefabIndex];
+
+        if (GameManager.Instance == null
+            || !GameManager.Instance.TrySpendCoins(senderTeam, purchaseCost))
+        {
+            return;
+        }
+
+        GameObject placedObject = Instantiate(prefab, position, rotation);
+
+        placedObject.GetComponent<NetworkObject>().Spawn();
 
     }
 

@@ -72,10 +72,13 @@ public class ProjectileController : NetworkBehaviour
         }
 
         hasLanded = true;
+        Renderer targetRenderer = GetTargetRenderer(collision.collider);
+        bool changedColor = targetRenderer != null
+            && !IsMaterialMatch(targetRenderer.sharedMaterial, projectileMaterial);
         ApplyMaterialToTarget(collision.collider);
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.TileWasHit(collision.collider);
+            GameManager.Instance.TileWasHit(collision.collider, projectileMaterial, changedColor);
         }
 
         ContactPoint contact = collision.GetContact(0);
@@ -154,17 +157,27 @@ public class ProjectileController : NetworkBehaviour
             return;
         }
 
-        Renderer targetRenderer = targetCollider.GetComponent<Renderer>();
-
-        if (targetRenderer == null)
-        {
-            targetRenderer = targetCollider.GetComponentInParent<Renderer>();
-        }
+        Renderer targetRenderer = GetTargetRenderer(targetCollider);
 
         if (targetRenderer != null)
         {
             targetRenderer.material = projectileMaterial;
         }
+    }
+
+    private static Renderer GetTargetRenderer(Collider targetCollider)
+    {
+        Renderer targetRenderer = targetCollider.GetComponent<Renderer>();
+        return targetRenderer != null
+            ? targetRenderer
+            : targetCollider.GetComponentInParent<Renderer>();
+    }
+
+    private static bool IsMaterialMatch(Material currentMaterial, Material targetMaterial)
+    {
+        return currentMaterial != null && targetMaterial != null
+            && (currentMaterial == targetMaterial
+                || currentMaterial.name.StartsWith(targetMaterial.name));
     }
 
     private static bool TryGetRendererAtImpact(
