@@ -7,6 +7,8 @@ public class TileScoreUI : MonoBehaviour
     [SerializeField] private LayerMask tileLayer;
     [SerializeField] private Material blueMaterial;
     [SerializeField] private Material redMaterial;
+    [SerializeField] private Vector2 arenaXBounds = new Vector2(-4.2f, 9.4f);
+    [SerializeField] private Vector2 arenaZBounds = new Vector2(-6.4f, 6.4f);
     [SerializeField, Min(0.05f)] private float refreshInterval = 0.25f;
 
     [Header("Blue Side UI")]
@@ -53,6 +55,14 @@ public class TileScoreUI : MonoBehaviour
 
     private void UpdateScores()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsSpawned)
+        {
+            int synchronizedBlueScore = GameManager.Instance.BlueScore;
+            int synchronizedRedScore = GameManager.Instance.RedScore;
+            SetScoreTexts(synchronizedBlueScore, synchronizedRedScore);
+            return;
+        }
+
         if (blueMaterial == null || redMaterial == null)
         {
             return;
@@ -69,6 +79,14 @@ public class TileScoreUI : MonoBehaviour
                 continue;
             }
 
+            Vector3 tilePosition = tileRenderer.bounds.center;
+
+            if (tilePosition.x < arenaXBounds.x || tilePosition.x > arenaXBounds.y
+                || tilePosition.z < arenaZBounds.x || tilePosition.z > arenaZBounds.y)
+            {
+                continue;
+            }
+
             Material tileMaterial = tileRenderer.sharedMaterial;
 
             if (tileMaterial == blueMaterial || IsMaterialMatch(tileMaterial, blueMaterial))
@@ -81,6 +99,11 @@ public class TileScoreUI : MonoBehaviour
             }
         }
 
+        SetScoreTexts(blueScore, redScore);
+    }
+
+    private void SetScoreTexts(int blueScore, int redScore)
+    {
         bool localPlayerIsBlue = TeamCameraController.Instance == null
             || !TeamCameraController.Instance.HasTeam
             || TeamCameraController.Instance.CurrentTeam == NetworkPlayer.Team.Blue;

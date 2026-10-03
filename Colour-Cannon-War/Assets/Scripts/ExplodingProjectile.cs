@@ -43,7 +43,7 @@ public class ExplodingProjectile : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsServer)
+        if (IsSpawned && !IsServer)
         {
             return;
         }
@@ -103,6 +103,10 @@ public class ExplodingProjectile : NetworkBehaviour
         {
             NetworkObject.Despawn(true);
         }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private Rigidbody SpawnSmallerProjectile(Vector3 parentVelocity)
@@ -128,16 +132,19 @@ public class ExplodingProjectile : NetworkBehaviour
 
         ProjectileController projectileController = smallerProjectile.GetComponent<ProjectileController>();
 
-        NetworkObject networkObject = smallerProjectile.GetComponent<NetworkObject>();
-
-        if (networkObject == null)
+        if (IsSpawned)
         {
-            Debug.LogError("The smaller projectile prefab needs a NetworkObject component.");
-            Destroy(smallerProjectile.gameObject);
-            return null;
-        }
+            NetworkObject networkObject = smallerProjectile.GetComponent<NetworkObject>();
 
-        networkObject.Spawn();
+            if (networkObject == null)
+            {
+                Debug.LogError("The smaller projectile prefab needs a NetworkObject component.");
+                Destroy(smallerProjectile.gameObject);
+                return null;
+            }
+
+            networkObject.Spawn();
+        }
 
         if (projectileController != null)
         {

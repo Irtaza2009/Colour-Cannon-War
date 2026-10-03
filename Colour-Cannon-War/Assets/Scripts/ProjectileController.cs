@@ -53,11 +53,15 @@ public class ProjectileController : NetworkBehaviour
         {
             StartCoroutine(DespawnAfterCoroutine(delay));
         }
+        else if (!IsSpawned)
+        {
+            Destroy(gameObject, delay);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!IsServer)
+        if (IsSpawned && !IsServer)
         {
             return;
         }
@@ -69,9 +73,17 @@ public class ProjectileController : NetworkBehaviour
 
         hasLanded = true;
         ApplyMaterialToTarget(collision.collider);
-        GameManager.Instance.TileWasHit(collision.collider);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TileWasHit(collision.collider);
+        }
+
         ContactPoint contact = collision.GetContact(0);
-        ApplyTileColorClientRpc(contact.point, contact.normal, networkColor.Value);
+        if (IsSpawned)
+        {
+            ApplyTileColorClientRpc(contact.point, contact.normal, networkColor.Value);
+        }
+
         DespawnAfter(disappearDelay);
     }
 

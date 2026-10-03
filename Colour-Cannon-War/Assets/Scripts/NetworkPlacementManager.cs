@@ -5,10 +5,12 @@ using UnityEngine;
 public class NetworkPlacementManager : NetworkBehaviour
 {
     [SerializeField] private GameObject[] placeablePrefabs;
-    [SerializeField] private Vector2 gridOrigin = new Vector2(-3.8f, -1.6f);
-    [SerializeField, Min(0.01f)] private float cellSize = 1.6f;
-    [SerializeField, Min(1)] private int gridDepth = 11;
-    [SerializeField, Min(1)] private int territoryDepth = 5;
+    [SerializeField] private float placementXStart = -3.8f;
+    [SerializeField, Min(0.01f)] private float placementCellSize = 1.6f;
+    [SerializeField, Min(1)] private int placementWidth = 9;
+    [SerializeField, Min(1)] private int placementRows = 3;
+    [SerializeField] private float bluePlacementZStart = -14f;
+    [SerializeField] private float redPlacementZStart = 10.8f;
 
     public int GetPrefabIndex(GameObject prefab)
     {
@@ -46,7 +48,7 @@ public class NetworkPlacementManager : NetworkBehaviour
             ? NetworkPlayer.Team.Blue
             : NetworkPlayer.Team.Red;
 
-        if (!IsPositionInTerritory(position, senderTeam))
+        if (!IsPositionInPlacementZone(position, senderTeam))
         {
             return;
         }
@@ -75,19 +77,23 @@ public class NetworkPlacementManager : NetworkBehaviour
 
     }
 
-    private bool IsPositionInTerritory(Vector3 position, NetworkPlayer.Team team)
+    private bool IsPositionInPlacementZone(Vector3 position, NetworkPlayer.Team team)
     {
-        int zIndex = Mathf.RoundToInt((position.z - gridOrigin.y) / cellSize);
-        int clampedTerritoryDepth = Mathf.Clamp(territoryDepth, 1, gridDepth);
+        float zStart = team == NetworkPlayer.Team.Blue
+            ? bluePlacementZStart
+            : redPlacementZStart;
+        int xIndex = Mathf.RoundToInt((position.x - placementXStart) / placementCellSize);
+        int zIndex = Mathf.RoundToInt((position.z - zStart) / placementCellSize);
 
-        if (zIndex < 0 || zIndex >= gridDepth)
+        if (xIndex < 0 || xIndex >= placementWidth || zIndex < 0 || zIndex >= placementRows)
         {
             return false;
         }
 
-        return team == NetworkPlayer.Team.Blue
-            ? zIndex < clampedTerritoryDepth
-            : zIndex >= gridDepth - clampedTerritoryDepth;
+        float expectedX = placementXStart + xIndex * placementCellSize;
+        float expectedZ = zStart + zIndex * placementCellSize;
+        return Mathf.Abs(position.x - expectedX) <= placementCellSize * 0.3f
+            && Mathf.Abs(position.z - expectedZ) <= placementCellSize * 0.3f;
     }
 
 }

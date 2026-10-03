@@ -9,11 +9,12 @@ public class PlacementController : MonoBehaviour
     [SerializeField] private Camera placementCamera;
     [SerializeField] private LayerMask tileLayer = ~0;
     [SerializeField] private float tileTopOffset = 0.02f;
-    [SerializeField] private Vector2 gridOrigin = new Vector2(-3.8f, -1.6f);
-    [SerializeField, Min(0.01f)] private float cellSize = 1.6f;
-    [SerializeField, Min(1)] private int gridWidth = 10;
-    [SerializeField, Min(1)] private int gridDepth = 11;
-    [SerializeField, Min(1)] private int territoryDepth = 5;
+    [SerializeField] private float placementXStart = -3.8f;
+    [SerializeField, Min(0.01f)] private float placementCellSize = 1.6f;
+    [SerializeField, Min(1)] private int placementWidth = 9;
+    [SerializeField, Min(1)] private int placementRows = 3;
+    [SerializeField] private float bluePlacementZStart = -14f;
+    [SerializeField] private float redPlacementZStart = 10.8f;
     [SerializeField] private float mortarZOffset = -0.3f;
     [SerializeField] private float redMortarZOffset = 0.3f;
     [SerializeField] private Color validPreviewColor = new Color(0.65f, 0.65f, 0.65f, 0.65f);
@@ -146,35 +147,8 @@ public class PlacementController : MonoBehaviour
         AlignPreviewToTileTop(hit.collider);
         ApplyPrefabOffset();
         previewPosition = previewObject.transform.position;
-        previewIsValid = IsPositionInLocalTerritory() && !IsPositionOccupied();
+        previewIsValid = !IsPositionOccupied();
         SetPreviewColor(previewIsValid ? validPreviewColor : invalidPreviewColor);
-    }
-
-    private bool IsPositionInLocalTerritory()
-    {
-        if (TeamCameraController.Instance == null || !TeamCameraController.Instance.HasTeam)
-        {
-            return false;
-        }
-
-        return IsPositionInTerritory(
-            previewPosition,
-            TeamCameraController.Instance.CurrentTeam);
-    }
-
-    public bool IsPositionInTerritory(Vector3 position, NetworkPlayer.Team team)
-    {
-        int zIndex = Mathf.RoundToInt((position.z - gridOrigin.y) / cellSize);
-        int clampedTerritoryDepth = Mathf.Clamp(territoryDepth, 1, gridDepth);
-
-        if (zIndex < 0 || zIndex >= gridDepth)
-        {
-            return false;
-        }
-
-        return team == NetworkPlayer.Team.Blue
-            ? zIndex < clampedTerritoryDepth
-            : zIndex >= gridDepth - clampedTerritoryDepth;
     }
 
     private void ApplyPrefabOffset()
@@ -198,19 +172,29 @@ public class PlacementController : MonoBehaviour
 
     private bool TryGetGridPosition(Vector3 hitPosition, out Vector3 snappedPosition)
     {
-        int xIndex = Mathf.RoundToInt((hitPosition.x - gridOrigin.x) / cellSize);
-        int zIndex = Mathf.RoundToInt((hitPosition.z - gridOrigin.y) / cellSize);
+        if (TeamCameraController.Instance == null || !TeamCameraController.Instance.HasTeam)
+        {
+            snappedPosition = default;
+            return false;
+        }
 
-        if (xIndex < 0 || xIndex >= gridWidth || zIndex < 0 || zIndex >= gridDepth)
+        NetworkPlayer.Team team = TeamCameraController.Instance.CurrentTeam;
+        float zStart = team == NetworkPlayer.Team.Blue
+            ? bluePlacementZStart
+            : redPlacementZStart;
+        int xIndex = Mathf.RoundToInt((hitPosition.x - placementXStart) / placementCellSize);
+        int zIndex = Mathf.RoundToInt((hitPosition.z - zStart) / placementCellSize);
+
+        if (xIndex < 0 || xIndex >= placementWidth || zIndex < 0 || zIndex >= placementRows)
         {
             snappedPosition = default;
             return false;
         }
 
         snappedPosition = new Vector3(
-            gridOrigin.x + xIndex * cellSize,
+            placementXStart + xIndex * placementCellSize,
             hitPosition.y,
-            gridOrigin.y + zIndex * cellSize);
+            zStart + zIndex * placementCellSize);
         return true;
     }
 

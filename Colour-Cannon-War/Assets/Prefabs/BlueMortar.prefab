@@ -400,8 +400,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5617010196030459844}
-  - component: {fileID: 5750700887802464908}
   - component: {fileID: 242775914834009812}
+  - component: {fileID: 5750700887802464908}
   m_Layer: 0
   m_Name: BlueMortar
   m_TagString: Untagged
@@ -431,34 +431,6 @@ Transform:
   - {fileID: 613166597195374592}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &5750700887802464908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7665095856563077786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CannonController
-  projectilePrefab: {fileID: 4570241817449906003, guid: bc76b4cd76fe2a14ea2e154eaa0de7c8, type: 3}
-  muzzle: {fileID: 613166597195374592}
-  projectileMaterial: {fileID: 2100000, guid: 709811689e4cb1b47b1a6bae26156728, type: 2}
-  projectileSpeed: 12
-  launchAngle: 16
-  projectileLifetime: 20
-  horizontalSpread: 4
-  launchAngleSpread: 8
-  rotateCylinder: 0
-  cylinder: {fileID: 0}
-  rotationAxis: {x: 0, y: 0, z: 0}
-  cylinderRotationLimit: 40
-  rotationSpeed: 40
-  fireOnStart: 1
-  reloadTime: 2
-  reloadVariance: 0.2
 --- !u!114 &242775914834009812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,6 +458,35 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &5750700887802464908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665095856563077786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CannonController
+  ShowTopMostFoldoutHeaderGroup: 1
+  projectilePrefab: {fileID: 4570241817449906003, guid: bc76b4cd76fe2a14ea2e154eaa0de7c8, type: 3}
+  muzzle: {fileID: 613166597195374592}
+  projectileMaterial: {fileID: 2100000, guid: 709811689e4cb1b47b1a6bae26156728, type: 2}
+  projectileSpeed: 12
+  launchAngle: 16
+  projectileLifetime: 20
+  horizontalSpread: 4
+  launchAngleSpread: 8
+  rotateCylinder: 0
+  cylinder: {fileID: 0}
+  rotationAxis: {x: 0, y: 0, z: 0}
+  cylinderRotationLimit: 40
+  rotationSpeed: 40
+  fireOnStart: 1
+  reloadTime: 4
+  reloadVariance: 0.2
 --- !u!1 &8565619717604916436
 GameObject:
   m_ObjectHideFlags: 0

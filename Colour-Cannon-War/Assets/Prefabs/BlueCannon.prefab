@@ -99,8 +99,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8988108818576205582}
-  - component: {fileID: 3185681238124575073}
   - component: {fileID: 1639882027475608484}
+  - component: {fileID: 3185681238124575073}
   m_Layer: 0
   m_Name: BlueCannon
   m_TagString: Untagged
@@ -126,34 +126,6 @@ Transform:
   - {fileID: 3354753027879339458}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
---- !u!114 &3185681238124575073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3071022963999183131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CannonController
-  projectilePrefab: {fileID: 6419134360401917434, guid: 334219b6792dae94386d7cd9bed7ae58, type: 3}
-  muzzle: {fileID: 3335344508976972778}
-  projectileMaterial: {fileID: 2100000, guid: 709811689e4cb1b47b1a6bae26156728, type: 2}
-  projectileSpeed: 10.5
-  launchAngle: 10
-  projectileLifetime: 10
-  horizontalSpread: 15
-  launchAngleSpread: 10
-  rotateCylinder: 1
-  cylinder: {fileID: 3354753027879339458}
-  rotationAxis: {x: 0, y: 0, z: 3}
-  cylinderRotationLimit: 40
-  rotationSpeed: 30
-  fireOnStart: 1
-  reloadTime: 2
-  reloadVariance: 0.2
 --- !u!114 &1639882027475608484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +153,35 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &3185681238124575073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3071022963999183131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CannonController
+  ShowTopMostFoldoutHeaderGroup: 1
+  projectilePrefab: {fileID: 6419134360401917434, guid: 334219b6792dae94386d7cd9bed7ae58, type: 3}
+  muzzle: {fileID: 3335344508976972778}
+  projectileMaterial: {fileID: 2100000, guid: 709811689e4cb1b47b1a6bae26156728, type: 2}
+  projectileSpeed: 10.5
+  launchAngle: 10
+  projectileLifetime: 10
+  horizontalSpread: 15
+  launchAngleSpread: 10
+  rotateCylinder: 1
+  cylinder: {fileID: 3354753027879339458}
+  rotationAxis: {x: 0, y: 0, z: 3}
+  cylinderRotationLimit: 40
+  rotationSpeed: 30
+  fireOnStart: 1
+  reloadTime: 2
+  reloadVariance: 0.2
 --- !u!1 &3269743318602516950
 GameObject:
   m_ObjectHideFlags: 0

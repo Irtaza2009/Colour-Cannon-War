@@ -52,7 +52,7 @@ public class CannonController : NetworkBehaviour
     {
         RotateCylinder();
 
-        if (!IsServer)
+        if (IsNetworkSessionActive() && !IsServer)
         {
             return;
         }
@@ -112,16 +112,20 @@ public class CannonController : NetworkBehaviour
 
         Transform firingPoint = muzzle != null ? muzzle : transform;
         Rigidbody projectile = Instantiate(projectilePrefab, firingPoint.position, firingPoint.rotation);
-        NetworkObject networkObject = projectile.GetComponent<NetworkObject>();
 
-        if (networkObject == null)
+        if (IsNetworkSessionActive())
         {
-            Debug.LogError("The projectile prefab needs a NetworkObject component.");
-            Destroy(projectile.gameObject);
-            return;
-        }
+            NetworkObject networkObject = projectile.GetComponent<NetworkObject>();
 
-        networkObject.Spawn();
+            if (networkObject == null)
+            {
+                Debug.LogError("The projectile prefab needs a NetworkObject component.");
+                Destroy(projectile.gameObject);
+                return;
+            }
+
+            networkObject.Spawn();
+        }
 
         ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
 
@@ -150,5 +154,10 @@ public class CannonController : NetworkBehaviour
         {
             projectileController?.DespawnAfter(projectileLifetime);
         }
+    }
+
+    private static bool IsNetworkSessionActive()
+    {
+        return NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening;
     }
 }
