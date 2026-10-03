@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
@@ -151,6 +152,11 @@ public class GameManager : NetworkBehaviour
         {
             Debug.Log("Game Over");
         }
+    }
+
+    public void ReturnToMenuButton()
+    {
+        SceneManager.LoadScene("MenuScene");
     }
 
 }
