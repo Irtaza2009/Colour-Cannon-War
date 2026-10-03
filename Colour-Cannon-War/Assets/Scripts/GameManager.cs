@@ -135,6 +135,13 @@ public class GameManager : NetworkBehaviour
         if (winnerText != null)
         {
             winnerText.text = winningTeam == 0 ? "Blue Wins!" : "Red Wins!";
+
+            Material winningMaterial = winningTeam == 0 ? blueMaterial : redMaterial;
+
+            if (winningMaterial != null)
+            {
+                winnerText.color = winningMaterial.color;
+            }
         }
     }
 
