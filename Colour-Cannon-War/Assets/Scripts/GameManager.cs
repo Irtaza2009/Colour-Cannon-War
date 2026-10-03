@@ -165,7 +165,7 @@ public class GameManager : NetworkBehaviour
     {
         if (timerText != null)
         {
-            timerText.text = "Time: " + Mathf.CeilToInt(seconds).ToString();
+            timerText.text = "Time: " + Mathf.CeilToInt(seconds).ToString() + "s";
         }
     }
 
@@ -190,8 +190,8 @@ public class GameManager : NetworkBehaviour
         }
 
         winnerText.text = winningTeam == 0
-            ? $"Blue Wins! {blueScore - redScore}"
-            : $"Red Wins! {redScore - blueScore}";
+            ? $"Blue Wins!"
+            : $"Red Wins!";
         Material winningMaterial = winningTeam == 0 ? blueMaterial : redMaterial;
 
         if (winningMaterial != null)
