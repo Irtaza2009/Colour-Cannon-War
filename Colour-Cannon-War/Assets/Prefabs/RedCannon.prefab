@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1443521118763964068}
-  - component: {fileID: 2573119010385271506}
   - component: {fileID: 4258791094820286422}
+  - component: {fileID: 2573119010385271506}
   m_Layer: 0
   m_Name: RedCannon
   m_TagString: Untagged
@@ -36,34 +36,6 @@ Transform:
   - {fileID: 7335318227338691861}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
---- !u!114 &2573119010385271506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 369988169565566234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CannonController
-  projectilePrefab: {fileID: 6419134360401917434, guid: 334219b6792dae94386d7cd9bed7ae58, type: 3}
-  muzzle: {fileID: 2587259931987761135}
-  projectileMaterial: {fileID: 2100000, guid: 4a0775164f4e404489d63cc16e8f9931, type: 2}
-  projectileSpeed: 10.5
-  launchAngle: 10
-  projectileLifetime: 10
-  horizontalSpread: 15
-  launchAngleSpread: 10
-  rotateCylinder: 1
-  cylinder: {fileID: 7335318227338691861}
-  rotationAxis: {x: 0, y: 0, z: 3}
-  cylinderRotationLimit: 40
-  rotationSpeed: 30
-  fireOnStart: 1
-  reloadTime: 2
-  reloadVariance: 0.2
 --- !u!114 &4258791094820286422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,7 +55,7 @@ MonoBehaviour:
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
-  m_InScenePlaced: 1
+  m_InScenePlaced: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -91,6 +63,35 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &2573119010385271506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369988169565566234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4756007292b5f4f47863b1829297320a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CannonController
+  ShowTopMostFoldoutHeaderGroup: 1
+  projectilePrefab: {fileID: 6419134360401917434, guid: 334219b6792dae94386d7cd9bed7ae58, type: 3}
+  muzzle: {fileID: 2587259931987761135}
+  projectileMaterial: {fileID: 2100000, guid: 4a0775164f4e404489d63cc16e8f9931, type: 2}
+  projectileSpeed: 10.5
+  launchAngle: 10
+  projectileLifetime: 10
+  horizontalSpread: 15
+  launchAngleSpread: 10
+  rotateCylinder: 1
+  cylinder: {fileID: 7335318227338691861}
+  rotationAxis: {x: 0, y: 0, z: 3}
+  cylinderRotationLimit: 40
+  rotationSpeed: 30
+  fireOnStart: 1
+  reloadTime: 2
+  reloadVariance: 0.2
 --- !u!1 &423496615487070066
 GameObject:
   m_ObjectHideFlags: 0
