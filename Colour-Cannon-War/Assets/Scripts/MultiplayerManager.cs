@@ -155,6 +155,16 @@ public async void CreateRoom()
                 MaxPlayers = 2
             }.WithRelayNetwork();
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // A browser host must allocate Relay with WSS. Being explicit here
+            // keeps the Relay allocation in sync with UnityTransport's
+            // WebSocket driver instead of depending on a package default.
+            options = options.WithNetworkOptions(new NetworkOptions
+            {
+                RelayProtocol = RelayProtocol.WSS
+            });
+#endif
+
             currentSession = await MultiplayerService.Instance.CreateSessionAsync(options);
 
             Debug.Log("Room created!");
