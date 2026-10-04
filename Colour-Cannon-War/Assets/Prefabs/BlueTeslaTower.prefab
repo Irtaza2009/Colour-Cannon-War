@@ -391,6 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ShowTopMostFoldoutHeaderGroup: 1
+  placementY: 0.2
   muzzle: {fileID: 7452112539162316317}
   tileLayer:
     serializedVersion: 2
