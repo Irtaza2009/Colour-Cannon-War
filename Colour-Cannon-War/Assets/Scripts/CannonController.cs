@@ -52,7 +52,7 @@ public class CannonController : NetworkBehaviour
     {
         RotateCylinder();
 
-        if (IsNetworkSessionActive() && !IsServer)
+        if (IsNetworkSessionActive() && (!IsServer || !IsSpawned))
         {
             return;
         }
@@ -155,13 +155,23 @@ public class CannonController : NetworkBehaviour
             projectileController?.DespawnAfter(projectileLifetime);
         }
 
-        PlayCannonSoundClientRPC();
+        if (IsSpawned)
+        {
+            PlayCannonSoundClientRPC();
+        }
+        else if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayCannonSound();
+        }
     }
 
     [ClientRpc]
     private void PlayCannonSoundClientRPC()
     {
-       AudioManager.Instance.PlayCannonSound();
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayCannonSound();
+        }
     }
 
     private static bool IsNetworkSessionActive()

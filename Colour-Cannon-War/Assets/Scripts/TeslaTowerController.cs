@@ -42,7 +42,7 @@ public class TeslaTowerController : NetworkBehaviour
 
     private void Update()
     {
-        if (IsNetworkSessionActive() && !IsServer)
+        if (IsNetworkSessionActive() && (!IsServer || !IsSpawned))
         {
             return;
         }
@@ -86,12 +86,12 @@ public class TeslaTowerController : NetworkBehaviour
         Color beamColor = teamTileMaterial.color;
         ShowBeam(firingPoint.position, targetPosition, beamColor);
 
-        if (IsNetworkSessionActive())
+        if (IsNetworkSessionActive() && IsSpawned)
         {
             FireBeamClientRpc(targetPosition, beamColor);
             PlayZapSoundClientRPC();
         }
-        else
+        else if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlayZapSound();
         }
@@ -223,6 +223,9 @@ public class TeslaTowerController : NetworkBehaviour
     [ClientRpc]
     private void PlayZapSoundClientRPC()
     {
-        AudioManager.Instance.PlayZapSound();
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayZapSound();
+        }
     }
 }

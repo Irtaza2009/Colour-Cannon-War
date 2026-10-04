@@ -16,6 +16,7 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField] private string gameplaySceneName = "GameScene";
     private bool gameplaySceneLoading;
     private bool sessionOperationInProgress;
+    private bool networkCallbacksSubscribed;
     private Task initializationTask;
 
        private void Awake()
@@ -25,6 +26,7 @@ public class MultiplayerManager : MonoBehaviour
 
    private async void Start()
     {
+        SubscribeToNetworkCallbacks();
         initializationTask = InitializeServices();
         await initializationTask;
     }
@@ -33,7 +35,17 @@ public class MultiplayerManager : MonoBehaviour
     {
         try
         {
-            await UnityServices.InitializeAsync();
+            InitializationOptions options = new InitializationOptions();
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // Browser tabs on the same itch.io origin share local storage. Give
+            // each tab a separate anonymous-auth profile so host and joining
+            // player never reuse the same UGS player identity.
+            string webGlProfile = "webgl-" + System.Guid.NewGuid().ToString("N").Substring(0, 24);
+            options.SetProfile(webGlProfile);
+#endif
+
+            await UnityServices.InitializeAsync(options);
 
             if (!AuthenticationService.Instance.IsSignedIn)
             {
@@ -68,18 +80,28 @@ private void CheckPlayersConnected()
 
 private void OnEnable()
     {
-        if (NetworkManager.Singleton != null)
-        {
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-        }
+        SubscribeToNetworkCallbacks();
     }
 
 private void OnDisable()
     {
-        if (NetworkManager.Singleton != null)
+        if (networkCallbacksSubscribed && NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
         }
+
+        networkCallbacksSubscribed = false;
+    }
+
+    private void SubscribeToNetworkCallbacks()
+    {
+        if (networkCallbacksSubscribed || NetworkManager.Singleton == null)
+        {
+            return;
+        }
+
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        networkCallbacksSubscribed = true;
     }
 
 private void OnClientConnected(ulong clientId)
