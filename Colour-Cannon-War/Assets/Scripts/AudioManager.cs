@@ -13,7 +13,7 @@ public class AudioManager : NetworkBehaviour
 public AudioClip BackgroundMusic;
 public AudioClip CannonSound;
 public AudioClip ZapSound;
-
+public AudioClip ButtonSound;
 private void Awake()
     {
         Instance = this;
@@ -39,8 +39,16 @@ public void PlayZapSound()
         PlaySFX(ZapSound);
     }
 
+public void PlayButtonSound()
+    {
+        PlaySFX(ButtonSound);
+    }
 
-
+public void StopAllAudio()
+    {
+        MusicSource.Stop();
+        SFXSource.Stop();
+    }
 
 
 }

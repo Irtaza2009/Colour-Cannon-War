@@ -209,6 +209,7 @@ MonoBehaviour:
   BackgroundMusic: {fileID: 8300000, guid: ea00196a4ea694ded8c69956bf2a47fa, type: 3}
   CannonSound: {fileID: 8300000, guid: 33b3c1f5c00c74030a3d8dfc284c8064, type: 3}
   ZapSound: {fileID: 8300000, guid: 15208ac6034474c8ebd17bfa71d58446, type: 3}
+  ButtonSound: {fileID: 8300000, guid: 2697e661af880474db4184158c36248a, type: 3}
 --- !u!1 &7863551291844788880
 GameObject:
   m_ObjectHideFlags: 0

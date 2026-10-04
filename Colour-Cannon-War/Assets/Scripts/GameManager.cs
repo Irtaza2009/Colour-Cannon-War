@@ -2,6 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameManager : NetworkBehaviour
 {
@@ -31,6 +32,7 @@ public class GameManager : NetworkBehaviour
     private readonly NetworkVariable<int> redScore = new();
     private readonly NetworkVariable<int> blueCoins = new();
     private readonly NetworkVariable<int> redCoins = new();
+    private readonly Dictionary<ulong, NetworkPlayer.Team> playerTeams = new();
     private bool matchStarted;
 
     public int BlueScore => blueScore.Value;
@@ -90,6 +92,8 @@ public class GameManager : NetworkBehaviour
         {
             return;
         }
+
+        CachePlayerTeams();
 
         if (!matchStarted && NetworkManager.Singleton.ConnectedClientsList.Count >= 2)
         {
@@ -178,6 +182,9 @@ public class GameManager : NetworkBehaviour
         }
 
         gameOver.Value = true;
+
+        StopAllAudioClientRpc();
+
         UpdateScores();
         int winningTeam = blueScore.Value == redScore.Value
             ? -1
@@ -185,9 +192,26 @@ public class GameManager : NetworkBehaviour
         ShowWinnerClientRpc(winningTeam, blueScore.Value, redScore.Value);
     }
 
-    private void EndGameBecausePlayerLeft()
+    private void EndGameBecausePlayerLeft(NetworkPlayer.Team disconnectedTeam)
     {
-        if (!IsServer || gameOver.)
+        if (!IsServer || gameOver.Value)
+        {
+            return;
+        }
+
+        gameOver.Value = true;
+
+        StopAllAudioClientRpc();
+
+        int winningTeam = disconnectedTeam == NetworkPlayer.Team.Blue ? 1 : 0;
+
+        ShowWinnerClientRpc(
+            winningTeam,
+            blueScore.Value,
+            redScore.Value
+    );
+
+        
     }
 
     private void UpdateScores()
@@ -339,6 +363,41 @@ public class GameManager : NetworkBehaviour
         {
             return;
         }
-        EndGame();
+
+        if (!playerTeams.TryGetValue(clientId, out NetworkPlayer.Team disconnectedTeam))
+        {
+            Debug.LogWarning("Disconnected player is Oloo and don't know Oloo Team.");
+            return;
+        }
+        EndGameBecausePlayerLeft(disconnectedTeam);
     }
+
+    private void CachePlayerTeams()
+    {
+        foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            if (client.PlayerObject == null)
+            {
+                continue;
+            }
+
+            NetworkPlayer player = client.PlayerObject.GetComponent<NetworkPlayer>();
+
+            if (player != null)
+            {
+                playerTeams[client.ClientId] = player.PlayerTeam.Value;
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void StopAllAudioClientRpc()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopAllAudio();
+        }
+        
+    }
+
 }
