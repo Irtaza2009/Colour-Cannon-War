@@ -154,6 +154,14 @@ public class CannonController : NetworkBehaviour
         {
             projectileController?.DespawnAfter(projectileLifetime);
         }
+
+        PlayCannonSoundClientRPC();
+    }
+
+    [ClientRpc]
+    private void PlayCannonSoundClientRPC()
+    {
+       AudioManager.Instance.PlayCannonSound();
     }
 
     private static bool IsNetworkSessionActive()

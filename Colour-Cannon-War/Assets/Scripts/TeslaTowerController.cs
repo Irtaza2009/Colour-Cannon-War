@@ -89,6 +89,11 @@ public class TeslaTowerController : NetworkBehaviour
         if (IsNetworkSessionActive())
         {
             FireBeamClientRpc(targetPosition, beamColor);
+            PlayZapSoundClientRPC();
+        }
+        else
+        {
+            AudioManager.Instance.PlayZapSound();
         }
     }
 
@@ -141,6 +146,8 @@ public class TeslaTowerController : NetworkBehaviour
         }
 
         ShowBeam(firingPoint.position, targetPosition, color);
+
+
     }
 
     private Renderer FindNearestTileAt(Vector3 position)
@@ -211,5 +218,11 @@ public class TeslaTowerController : NetworkBehaviour
     private static bool IsNetworkSessionActive()
     {
         return NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening;
+    }
+
+    [ClientRpc]
+    private void PlayZapSoundClientRPC()
+    {
+        AudioManager.Instance.PlayZapSound();
     }
 }
