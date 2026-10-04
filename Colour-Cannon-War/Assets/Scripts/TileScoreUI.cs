@@ -23,8 +23,7 @@ public class TileScoreUI : MonoBehaviour
 
     private void Start()
     {
-        UpdateLabels();
-        UpdateScores();
+        RefreshUI();
     }
 
     private void Update()
@@ -37,40 +36,45 @@ public class TileScoreUI : MonoBehaviour
         }
 
         refreshTimer = refreshInterval;
-        UpdateLabels();
-        UpdateScores();
+        RefreshUI();
     }
 
-    private void UpdateLabels()
+    private void RefreshUI()
     {
-        if (TeamCameraController.Instance == null || !TeamCameraController.Instance.HasTeam)
-        {
-            return;
-        }
-
-        bool localPlayerIsBlue = TeamCameraController.Instance.CurrentTeam == NetworkPlayer.Team.Blue;
-        SetText(blueHeadingText, localPlayerIsBlue ? "You" : "Blue");
-        SetText(redHeadingText, localPlayerIsBlue ? "Red" : "You");
+        UpdateScores();
     }
 
     private void UpdateScores()
     {
+        int blueScore;
+        int redScore;
+
+        // Prefer the synchronized network scores once the GameManager exists.
         if (GameManager.Instance != null && GameManager.Instance.IsSpawned)
         {
-            int synchronizedBlueScore = GameManager.Instance.BlueScore;
-            int synchronizedRedScore = GameManager.Instance.RedScore;
-            SetScoreTexts(synchronizedBlueScore, synchronizedRedScore);
-            return;
+            blueScore = GameManager.Instance.BlueScore;
+            redScore = GameManager.Instance.RedScore;
         }
+        else
+        {
+            CalculateTileScores(out blueScore, out redScore);
+        }
+
+        UpdateDisplay(blueScore, redScore);
+    }
+
+    private void CalculateTileScores(out int blueScore, out int redScore)
+    {
+        blueScore = 0;
+        redScore = 0;
 
         if (blueMaterial == null || redMaterial == null)
         {
             return;
         }
 
-        int blueScore = 0;
-        int redScore = 0;
-        Renderer[] tileRenderers = FindObjectsByType<Renderer>(FindObjectsInactive.Exclude);
+        Renderer[] tileRenderers =
+            FindObjectsByType<Renderer>(FindObjectsInactive.Exclude);
 
         foreach (Renderer tileRenderer in tileRenderers)
         {
@@ -81,38 +85,69 @@ public class TileScoreUI : MonoBehaviour
 
             Vector3 tilePosition = tileRenderer.bounds.center;
 
-            if (tilePosition.x < arenaXBounds.x || tilePosition.x > arenaXBounds.y
-                || tilePosition.z < arenaZBounds.x || tilePosition.z > arenaZBounds.y)
+            if (tilePosition.x < arenaXBounds.x ||
+                tilePosition.x > arenaXBounds.y ||
+                tilePosition.z < arenaZBounds.x ||
+                tilePosition.z > arenaZBounds.y)
             {
                 continue;
             }
 
             Material tileMaterial = tileRenderer.sharedMaterial;
 
-            if (tileMaterial == blueMaterial || IsMaterialMatch(tileMaterial, blueMaterial))
+            if (tileMaterial == blueMaterial ||
+                IsMaterialMatch(tileMaterial, blueMaterial))
             {
                 blueScore++;
             }
-            else if (tileMaterial == redMaterial || IsMaterialMatch(tileMaterial, redMaterial))
+            else if (tileMaterial == redMaterial ||
+                     IsMaterialMatch(tileMaterial, redMaterial))
             {
                 redScore++;
             }
         }
-
-        SetScoreTexts(blueScore, redScore);
     }
 
-    private void SetScoreTexts(int blueScore, int redScore)
+    private void UpdateDisplay(int blueScore, int redScore)
     {
-        bool localPlayerIsBlue = TeamCameraController.Instance == null
-            || !TeamCameraController.Instance.HasTeam
-            || TeamCameraController.Instance.CurrentTeam == NetworkPlayer.Team.Blue;
+        bool localPlayerIsBlue = true;
 
-        SetText(blueScoreText, localPlayerIsBlue ? blueScore.ToString() : redScore.ToString());
-        SetText(redScoreText, localPlayerIsBlue ? redScore.ToString() : blueScore.ToString());
+        if (TeamCameraController.Instance != null &&
+            TeamCameraController.Instance.HasTeam)
+        {
+            localPlayerIsBlue =
+                TeamCameraController.Instance.CurrentTeam == NetworkPlayer.Team.Blue;
+        }
+
+        if (localPlayerIsBlue)
+        {
+            // Blue player sees:
+            // You    = blue
+            // Red    = red
+
+            SetText(blueHeadingText, "You");
+            SetText(blueScoreText, blueScore.ToString());
+
+            SetText(redHeadingText, "Red");
+            SetText(redScoreText, redScore.ToString());
+        }
+        else
+        {
+            // Red player sees:
+            // Red    = blue's opponent
+            // You    = red
+
+            SetText(blueHeadingText, "Red");
+            SetText(blueScoreText, blueScore.ToString());
+
+            SetText(redHeadingText, "You");
+            SetText(redScoreText, redScore.ToString());
+        }
     }
 
-    private static bool IsMaterialMatch(Material currentMaterial, Material targetMaterial)
+    private static bool IsMaterialMatch(
+        Material currentMaterial,
+        Material targetMaterial)
     {
         if (currentMaterial == null || targetMaterial == null)
         {

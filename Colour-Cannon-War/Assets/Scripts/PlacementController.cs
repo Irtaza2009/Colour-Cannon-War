@@ -1,5 +1,4 @@
 using Unity.Netcode;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,7 +19,6 @@ public class PlacementController : MonoBehaviour
     [SerializeField] private Color validPreviewColor = new Color(0.65f, 0.65f, 0.65f, 0.65f);
     [SerializeField] private Color invalidPreviewColor = new Color(1f, 0.25f, 0.25f, 0.65f);
 
-    private readonly List<GameObject> placedObjects = new();
     private GameObject selectedPrefab;
     [SerializeField] private NetworkPlacementManager networkPlacementManager;
     private GameObject previewObject;
@@ -230,24 +228,16 @@ public class PlacementController : MonoBehaviour
 
     private bool IsPositionOccupied()
     {
-        Bounds previewBounds = GetPreviewBounds();
-
-        foreach (GameObject placedObject in placedObjects)
+        if (networkPlacementManager == null
+            || TeamCameraController.Instance == null
+            || !TeamCameraController.Instance.HasTeam)
         {
-            if (placedObject == null)
-            {
-                continue;
-            }
-
-            Bounds placedBounds = GetObjectBounds(placedObject);
-
-            if (previewBounds.Intersects(placedBounds))
-            {
-                return true;
-            }
+            return false;
         }
 
-        return false;
+        return networkPlacementManager.IsCellOccupied(
+            previewPosition,
+            TeamCameraController.Instance.CurrentTeam);
     }
 
     private GameObject PlaceSelectedObject()
@@ -305,28 +295,6 @@ public class PlacementController : MonoBehaviour
         previewObject = null;
         previewRenderers = null;
         previewIsValid = false;
-    }
-
-    private static Bounds GetObjectBounds(GameObject target)
-    {
-        Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
-        Bounds bounds = new Bounds(target.transform.position, Vector3.zero);
-        bool hasBounds = false;
-
-        foreach (Renderer renderer in renderers)
-        {
-            if (!hasBounds)
-            {
-                bounds = renderer.bounds;
-                hasBounds = true;
-            }
-            else
-            {
-                bounds.Encapsulate(renderer.bounds);
-            }
-        }
-
-        return bounds;
     }
 
     private bool WasPointerPressed()
