@@ -5,12 +5,11 @@ using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode.Transports.UTP;
 
 
 public class MultiplayerManager : MonoBehaviour
 {
-    private const int SessionOperationTimeoutSeconds = 30;
-
    private ISession currentSession;
    [SerializeField] private MultiplayerUI multiplayerUI;
     [SerializeField] private LoadingUI loadingUI;
@@ -127,6 +126,7 @@ public async void CreateRoom()
         try
         {
             await WaitForInitialization();
+            ConfigureTransportForCurrentPlatform();
 
             var options = new SessionOptions
             {
@@ -174,19 +174,14 @@ public async void CreateRoom()
         try
         {
             await WaitForInitialization();
+            ConfigureTransportForCurrentPlatform();
 
-            Task<ISession> joinTask = MultiplayerService.Instance.JoinSessionByCodeAsync(roomCode);
-            Task completedTask = await Task.WhenAny(
-                joinTask,
-                Task.Delay(System.TimeSpan.FromSeconds(SessionOperationTimeoutSeconds)));
-
-            if (completedTask != joinTask)
-            {
-                throw new System.TimeoutException(
-                    "Joining the room timed out. Check that the host is still connected and try again.");
-            }
-
-            currentSession = await joinTask;
+            // Joining also starts the Relay/Netcode connection. Do not impose a
+            // local timeout: cancelling our await does not cancel that network
+            // operation, which leaves the player in the lobby and makes retries
+            // fail with "player is already a member of the lobby".
+            currentSession = await MultiplayerService.Instance.JoinSessionByCodeAsync(roomCode);
+            SetLoading(false);
 
             Debug.Log("Joined room!");
             Debug.Log("Session ID: " + currentSession.Id);
@@ -212,6 +207,28 @@ public async void CreateRoom()
         }
 
         await initializationTask;
+    }
+
+    private static void ConfigureTransportForCurrentPlatform()
+    {
+        UnityTransport transport = NetworkManager.Singleton != null
+            ? NetworkManager.Singleton.GetComponent<UnityTransport>()
+            : null;
+
+        if (transport == null)
+        {
+            throw new System.InvalidOperationException(
+                "NetworkManager needs a UnityTransport component to create or join a Relay room.");
+        }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // Browsers can only connect to Relay through secure WebSockets (WSS).
+        transport.UseWebSockets = true;
+#else
+        // Native players use Relay's default UDP/DTLS connection. Leaving this
+        // enabled causes the WebSocket-driver/Relay-protocol mismatch in the log.
+        transport.UseWebSockets = false;
+#endif
     }
 
     private void SetLoading(bool isLoading)
