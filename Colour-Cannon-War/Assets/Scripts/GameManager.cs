@@ -31,6 +31,7 @@ public class GameManager : NetworkBehaviour
     private readonly NetworkVariable<int> redScore = new();
     private readonly NetworkVariable<int> blueCoins = new();
     private readonly NetworkVariable<int> redCoins = new();
+    private bool matchStarted;
 
     public int BlueScore => blueScore.Value;
     public int RedScore => redScore.Value;
@@ -85,7 +86,17 @@ public class GameManager : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsServer || gameOver.Value)
+        if (!IsServer)
+        {
+            return;
+        }
+
+        if (!matchStarted && NetworkManager.Singleton.ConnectedClientsList.Count >= 2)
+        {
+            matchStarted = true;
+        }
+
+        if (gameOver.Value)
         {
             return;
         }
@@ -172,6 +183,11 @@ public class GameManager : NetworkBehaviour
             ? -1
             : blueScore.Value > redScore.Value ? 0 : 1;
         ShowWinnerClientRpc(winningTeam, blueScore.Value, redScore.Value);
+    }
+
+    private void EndGameBecausePlayerLeft()
+    {
+        if (!IsServer || gameOver.)
     }
 
     private void UpdateScores()
@@ -299,5 +315,30 @@ public class GameManager : NetworkBehaviour
     public void ReturnToMenuButton()
     {
         SceneManager.LoadScene("MenuScene");
+    }
+
+    private void OnEnable()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
+    }
+
+    private void OnClientDisconnected(ulong clientId)
+    {
+        if (!IsServer || !matchStarted || gameOver.Value)
+        {
+            return;
+        }
+        EndGame();
     }
 }
