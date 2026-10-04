@@ -153,6 +153,15 @@ public class PlacementController : MonoBehaviour
 
     private void ApplyPrefabOffset()
     {
+        TeslaTowerController teslaTowerController = selectedPrefab.GetComponent<TeslaTowerController>();
+
+        if (teslaTowerController != null)
+        {
+            Vector3 position = previewObject.transform.position;
+            previewObject.transform.position = new Vector3(position.x, teslaTowerController.PlacementY, position.z);
+            return;
+        }
+
         CannonController cannonController = selectedPrefab.GetComponent<CannonController>();
 
         if (cannonController != null && cannonController.UsesExplodingProjectile())

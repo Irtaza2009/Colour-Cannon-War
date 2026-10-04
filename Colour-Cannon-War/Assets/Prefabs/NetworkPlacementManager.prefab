@@ -79,7 +79,9 @@ MonoBehaviour:
   - {fileID: 7665095856563077786, guid: 2c88ea86fe6244f01b1800b398a0ec55, type: 3}
   - {fileID: 369988169565566234, guid: 024ef12ab6e574cca8f9414e4b070766, type: 3}
   - {fileID: 7665095856563077786, guid: 28d8a40f8de1245f195b2b4f902db806, type: 3}
-  placeablePrefabCosts: 0a0000000f0000000a0000000f000000i
+  - {fileID: 4799232251033625943, guid: cba0bbbb8d0fda940b44fa33a22d9a94, type: 3}
+  - {fileID: 4799232251033625943, guid: 50ae22d60c0e1da4e8d3ac4934fba9c1, type: 3}
+  placeablePrefabCosts: 0a0000000f0000000a0000000f0000001400000014000000i
   placementXStart: -3.8
   placementCellSize: 1.6
   placementWidth: 9
